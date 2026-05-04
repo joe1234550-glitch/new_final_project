@@ -1,8 +1,8 @@
 package main.java.com.template.service;
 
-import com.template.dao.ItemDAO;
-import com.template.model.Item;
-import com.template.model.enums.Category;
+import main.java.com.template.dao.ItemDAO;
+import main.java.com.template.model.Item;
+import main.java.com.template.model.enums.Category;
 import java.util.ArrayList;
 import java.util.List;
 
