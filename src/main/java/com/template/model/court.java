@@ -42,6 +42,26 @@ public class court {
         this.updatedAt = updatedAt;
     }
 
+    public court(int id, String name, CourtType type, CourtStatus status, int hourlyRate) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.status = CourtStatus.AVAILABLE; // 預設狀態
+        this.hourlyRate = hourlyRate;
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public court(String name, String typeStr, CourtStatus status, int hourlyRate) {
+        this.name = name;
+        // 將傳入的字串 (例如 "hard") 轉為 Enum (CourtType.HARD)
+        this.type = CourtType.valueOf(typeStr.toUpperCase());
+        this.status = status;
+        this.hourlyRate = hourlyRate;
+        // 自動初始化時間，這對資料庫寫入很重要
+        this.createdAt = java.time.LocalDateTime.now();
+        this.updatedAt = java.time.LocalDateTime.now();
+    } //AdminService
     // === 業務方法 (Business Methods) ===
 
     /** 標記為已預約 */

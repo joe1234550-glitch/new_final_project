@@ -93,7 +93,7 @@ public class courtDAO {
         return null;
     }
 
-    public boolean updateStatus(int id, CourtStatus status) {
+    public static boolean updateStatus(int id, CourtStatus status) {
         // 這裡的 table 名稱要對應你資料庫的名稱 (假設是 courts)
         String sql = "UPDATE courts SET status = ?, updated_at = ? WHERE id = ?";
 
@@ -109,6 +109,23 @@ public class courtDAO {
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             System.err.println("❌ courtDAO 更新狀態失敗: " + e.getMessage());
+            return false;
+        }
+    }
+    public boolean insert(court c) {
+        String sql = "INSERT INTO courts (name, type, status, hourly_rate,description) VALUES (?, ?, ?, ?, ?)";
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, c.getName());
+            ps.setString(2,  c.getType().name());
+            // 將 Enum 轉為字串存入資料庫
+            ps.setString(3, c.getStatus().name());
+            ps.setInt(4, c.getHourlyRate());
+            ps.setString(5, c.getDescription()); // 寫入說明
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
             return false;
         }
     }

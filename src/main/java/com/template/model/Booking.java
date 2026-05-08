@@ -16,6 +16,7 @@ public class Booking {
     private String courtName;
     private String courtType;
 
+    private String paymentMethod; // ONLINE, CASH
     /** 新增預約用 */
     public Booking(int userId, int courtId, LocalDateTime start, LocalDateTime end, int fee) {
         this.userId = userId;
@@ -40,6 +41,15 @@ public class Booking {
         this.createdAt = createdAt;
     }
 
+    public Booking(int id, int userId, int courtId, LocalDateTime startTime, LocalDateTime endTime, int totalFee) {
+        this.id = id;
+        this.userId = userId;
+        this.courtId = courtId;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.totalFee = totalFee;
+    }
+
     // Getters & Setters ...
     public int getId() { return id; }
     public int getUserId() { return userId; }
@@ -51,11 +61,8 @@ public class Booking {
     public LocalDateTime getStartTime() { return startTime; }
     public LocalDateTime getEndTime() { return endTime; }
     public int getTotalFee() { return totalFee; }
-
-    public String getStatus() {
-        return status;
-    }
-    public void setStatus(String status) {
-        this.status = status;
-    }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+    public String getPaymentMethod() { return paymentMethod; }
+    public void setPaymentMethod(String method) { this.paymentMethod = method; }
 }

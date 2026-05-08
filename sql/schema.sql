@@ -41,7 +41,8 @@ CREATE TABLE users (
                        password_hash VARCHAR(255) NOT NULL,
                        phone VARCHAR(20),
                        email VARCHAR(100) UNIQUE,
-                       role VARCHAR(10) DEFAULT 'USER', -- 'USER' 或 'ADMIN'
+                        -- 使用 CHECK 約束確保角色只能是 'USER' 或 'ADMIN'
+                       role VARCHAR(10) DEFAULT 'USER' CHECK (role IN ('USER', 'ADMIN')),
                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -68,7 +69,7 @@ CREATE TABLE bookings (
                           total_fee INT NOT NULL,
                           status VARCHAR(20) DEFAULT 'PENDING', -- PENDING, PAID, CANCELLED
                           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
+                          payment_method VARCHAR(20),
 
                           CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
                           CONSTRAINT fk_court FOREIGN KEY (court_id) REFERENCES courts(id) ON DELETE CASCADE
@@ -78,3 +79,5 @@ INSERT INTO courts (name, type, status, description, hourly_rate) VALUES
                                                                       ('B號場', 'HARD', 'AVAILABLE', '標準硬地場', 500),
                                                                       ('C號場', 'CLAY', 'MAINTENANCE', '紅土整理中，暫不開放', 600),
                                                                       ('D號場', 'GRASS', 'AVAILABLE', '頂級草皮場', 800);
+
+ALTER TABLE bookings ADD COLUMN payment_method VARCHAR(20); -- 'ONLINE', 'CASH'

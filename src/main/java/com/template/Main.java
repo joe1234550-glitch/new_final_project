@@ -1,7 +1,7 @@
 package main.java.com.template;
 
 import main.java.com.template.config.DatabaseConfig;
-import com.template.view.MainView;
+//import main.java.com.template.view.MainView;
 import main.java.com.template.view.MainView2;
 
 import java.util.Scanner;
@@ -42,8 +42,6 @@ public class Main {
             }
 
             // Step 2: 啟動主畫面
-//            MainView mainView = new MainView(scanner);
-//            mainView.start();
             MainView2 mainView2 = new MainView2(scanner);
             mainView2.start();
 
