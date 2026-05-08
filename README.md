@@ -79,15 +79,6 @@ View（畫面）  →  Service（邏輯）  →  DAO（資料庫）  →  Postgr
 | **DAO** | 資料存取 | SQL / JDBC / 回傳 Model | 業務判斷 |
 | **Model** | 資料結構 | 屬性 / Getter / 業務方法 | 碰資料庫 |
 
-## 📝 修改步驟（同學照做）
-
-1. **改 package 名稱**：把 `com.template` 改成 `com.你的專題`
-2. **改 Enum**：`Category` → 你的分類、`Status` → 你的狀態流程
-3. **改 Model**：`Item` → 你的核心物件（例如 `Rose`、`Room`、`Bill`）
-4. **改 SQL**：`schema.sql` 裡的 `items` 表改成你的資料表
-5. **改 DAO**：`ItemDAO` 的 SQL 和 `mapRow()` 對應新欄位
-6. **改 Service**：驗證規則改成你的業務需求
-7. **改 View**：選單文字和操作流程
 
 ## 📊 類別圖（Mermaid）
 
