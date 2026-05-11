@@ -254,3 +254,11 @@ erDiagram
         timestamp created_at
     }
 ```
+## 📊 DEMO
+![1.png](demo/1.png)
+![2.png](demo/2.png)
+![3.png](demo/3.png)
+![4.png](demo/4.png)
+![5.png](demo/5.png)
+![6.png](demo/6.png)
+![7.png](demo/7.png)
