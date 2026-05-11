@@ -11,7 +11,7 @@ public class Booking {
     private int totalFee;
     private String status;
     private LocalDateTime createdAt;
-
+    private String username;
     // 用於顯示的額外資訊（非資料庫欄位，但 JOIN 時很有用）
     private String courtName;
     private String courtType;
@@ -65,4 +65,6 @@ public class Booking {
     public void setStatus(String status) { this.status = status; }
     public String getPaymentMethod() { return paymentMethod; }
     public void setPaymentMethod(String method) { this.paymentMethod = method; }
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
 }

@@ -11,6 +11,8 @@ import main.java.com.template.model.enums.CourtType ;
 import main.java.com.template.dao.UserDAO;
 import main.java.com.template.dao.courtDAO;
 import main.java.com.template.dao.BookingDAO;
+
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
@@ -56,23 +58,86 @@ public class AdminView {
 
     private void displayAllBookings() {
         List<Booking> list = adminService.getAllBookings();
-        System.out.println("\n--- 預約清單 ---");
-        list.forEach(b -> System.out.printf("ID:%d | 用戶:%d | 狀態:%s%n",
-                b.getId(), b.getUserId(), b.getStatus()));
+
+        System.out.println("\n" + "═".repeat(85));
+        System.out.println("                        🎾 預約總清單 🎾");
+        System.out.println("─".repeat(85));
+
+        // 定義標題列：將「用戶ID」換成「用戶帳號」
+        // %-6s (ID), %-15s (用戶帳號), %-15s (場地), %-22s (預約時間), %-10s (狀態)
+        System.out.printf("%-6s %-15s %-15s %-22s %-10s%n",
+                "ID", "用戶帳號", "場地", "預約時間", "狀態");
+        System.out.println("─".repeat(85));
+
+        if (list.isEmpty()) {
+            System.out.println("                 目前系統內尚無預約紀錄。");
+        } else {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+            for (Booking b : list) {
+                String timeRange = b.getStartTime().format(formatter);
+
+                // 輸出內容：使用 b.getUsername()
+                System.out.printf("%-6d %-15s %-15s %-22s %-10s%n",
+                        b.getId(),
+                        b.getUsername(),   // 顯示帳號
+                        b.getCourtName(),  // 顯示場地名
+                        timeRange,
+                        b.getStatus());
+            }
+        }
+        System.out.println("═".repeat(85) + "\n");
     }
     private void handleBookingProcess() {
-        System.out.print("請輸入欲處理的預約單 ID: ");
+        System.out.println("\n--- 🛠️ 預約單變更/審核流程 ---");
+
+        // 1. 輸入日期與帳號篩選
+        System.out.print("請輸入日期 (yyyy-MM-dd): ");
+        String dateStr = sc.nextLine();
+        System.out.print("請輸入使用者帳號: ");
+        String username = sc.nextLine();
+
+        // 2. 顯示該用戶在該日期的所有預約，方便管理員選擇 ID
+        // 這裡建議在 AdminService 新增一個查詢方法
+        List<Booking> userBookings = adminService.findUserBookingsByDate(username, dateStr);
+
+        if (userBookings.isEmpty()) {
+            System.out.println("❌ 該用戶在當天沒有預約紀錄。");
+            return;
+        }
+
+        System.out.println("\n查得預約紀錄如下：");
+        for (Booking b : userBookings) {
+            System.out.printf("ID:[%d] 場地:%s 時間:%s ~ %s 狀態:%s%n",
+                    b.getId(), b.getCourtName(), b.getStartTime(), b.getEndTime(), b.getStatus());
+        }
+
+        // 3. 選擇要修改的 ID
+        System.out.print("\n請輸入欲處理的預約單 ID: ");
         int bId = Integer.parseInt(sc.nextLine());
 
-        System.out.println("請選擇操作：[1] 核可支付(PAID) [2] 取消預約(CANCEL)");
+        // 4. 選擇操作
+        System.out.println("請選擇操作：[1] 修改預約內容 (時間/球場) [2] 取消預約 (CANCEL)");
         String choice = sc.nextLine();
-        String action = choice.equals("1") ? "PAID" : "CANCEL";
 
-        // 呼叫 Service 執行邏輯
-        if (adminService.processBooking(bId, action)) {
-            System.out.println("✅ 預約單狀態已成功更新。");
-        } else {
-            System.out.println("❌ 更新失敗，請檢查 ID 是否正確。");
+        if (choice.equals("2")) {
+            if (adminService.cancelBooking(bId)) {
+                System.out.println("✅ 預約已取消。");
+            }
+        } else if (choice.equals("1")) {
+            // 修改邏輯
+            System.out.print("請輸入新的球場 ID (按 Enter 不修改): ");
+            String newCourtId = sc.nextLine();
+            System.out.print("請輸入新日期時間 (yyyy-MM-dd HH:mm): ");
+            String newStart = sc.nextLine();
+            System.out.print("請輸入結束時間 (yyyy-MM-dd HH:mm): ");
+            String newEnd = sc.nextLine();
+
+            if (adminService.updateBooking(bId, newCourtId, newStart, newEnd)) {
+                System.out.println("✅ 預約內容已成功更新。");
+            } else {
+                System.out.println("❌ 更新失敗，可能時段重疊或場地維修中。");
+            }
         }
     }
     /** 4. 管理員選單 (範例：維修場地、改成可使用) */
