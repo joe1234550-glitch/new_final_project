@@ -94,7 +94,7 @@ public class courtDAO {
     }
 
     public static boolean updateStatus(int id, CourtStatus status) {
-        // 這裡的 table 名稱要對應你資料庫的名稱 (假設是 courts)
+
         String sql = "UPDATE courts SET status = ?, updated_at = ? WHERE id = ?";
 
         try (Connection conn = DatabaseConfig.getConnection();

@@ -42,16 +42,6 @@ public class court {
         this.updatedAt = updatedAt;
     }
 
-    public court(int id, String name, CourtType type, CourtStatus status, int hourlyRate) {
-        this.id = id;
-        this.name = name;
-        this.type = type;
-        this.status = CourtStatus.AVAILABLE; // 預設狀態
-        this.hourlyRate = hourlyRate;
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-    }
-
     public court(String name, String typeStr, CourtStatus status, int hourlyRate) {
         this.name = name;
         // 將傳入的字串 (例如 "hard") 轉為 Enum (CourtType.HARD)
