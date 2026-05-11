@@ -51,8 +51,9 @@ CREATE TABLE users (
 CREATE TABLE courts (
                         id SERIAL PRIMARY KEY,
                         name VARCHAR(50) NOT NULL,
-                        type VARCHAR(20) NOT NULL,       -- HARD (硬地), CLAY (紅土), GRASS (草地)
-                        status VARCHAR(20) NOT NULL,     -- AVAILABLE, BOOKED, MAINTENANCE
+                        type VARCHAR(20) NOT NULL CHECK (type IN ('HARD', 'GRASS', 'CLAY')), -- 類型也可以順便鎖定
+                        status VARCHAR(20) NOT NULL DEFAULT 'AVAILABLE'
+                            CHECK (status IN ('AVAILABLE', 'BOOKED', 'MAINTENANCE')),
                         description TEXT,
                         hourly_rate INT NOT NULL,        -- 時租金額
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -67,7 +68,8 @@ CREATE TABLE bookings (
                           start_time TIMESTAMP NOT NULL,
                           end_time TIMESTAMP NOT NULL,
                           total_fee INT NOT NULL,
-                          status VARCHAR(20) DEFAULT 'PENDING', -- PENDING, PAID, CANCELLED
+                          status VARCHAR(20) DEFAULT 'PENDING'
+                              CHECK (status IN ('PENDING', 'PAID', 'CANCELLED')), -- PENDING, PAID, CANCELLED
                           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                           payment_method VARCHAR(20),
 
